@@ -24,10 +24,10 @@ export default class TopNav extends React.Component {
                         <ul className="dropdown-menu dropdown-messages">
                             {/*<li className="divider"></li>*/}
                             <li>
-                                <span className="text-center" onClick={()=>this.loginOut()}>
+                                <a  onClick={()=>this.loginOut()}>
+                                    <i className="fa fa-sign-out fa-fw"></i>
                                     <span>退出登录</span>
-                                    <i className="fa fa-angle-right"></i>
-                                </span>
+                                </a>
                             </li>
                         </ul>
                     </li>

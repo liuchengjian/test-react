@@ -412,6 +412,10 @@ footer p {
     margin: 0px;
 }
 
+.dropdown-menu > li > a {
+    cursor: pointer;
+}
+
 .top-navbar .nav > li:hover .dropdown-menu {
     display: block;
 }
