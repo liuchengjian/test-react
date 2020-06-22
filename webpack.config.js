@@ -73,7 +73,10 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({template: './src/index.html'}),
+        new HtmlWebpackPlugin({
+            template: './src/index.html',
+            favicon: './favicon.ico'
+        }),
         new ExtractTextPlugin("css/[name].css"),
         //提出公共模块
         new webpack.optimize.CommonsChunkPlugin({
