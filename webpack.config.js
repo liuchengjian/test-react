@@ -11,8 +11,10 @@ module.exports = {
     },
     resolve: {
         alias: {
-            page:path.resolve(__dirname, 'src/page'),
-            component:path.resolve(__dirname, 'src/component'),
+            page: path.resolve(__dirname, 'src/page'),
+            component: path.resolve(__dirname, 'src/component'),
+            utils: path.resolve(__dirname, 'src/utils'),
+            // service: path.resolve(__dirname, 'src/service'),
         }
     },
     module: {
@@ -86,10 +88,16 @@ module.exports = {
     ],
     devServer: {
         // contentBase: './dist',
-        port:8086,
-        historyApiFallback:{
-            index:'/dist/index.html'
-        }
+        port: 8086,
+        historyApiFallback: {
+            index: '/dist/index.html'
+        },
+        proxy: {
+            '/mmall': {
+                target: 'http://139.9.222.156:8080',
+                changeOrigin: true,
+            },
+        },
     },
 
 };

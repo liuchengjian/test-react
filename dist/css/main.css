@@ -412,6 +412,10 @@ footer p {
     margin: 0px;
 }
 
+.dropdown-menu > li > a {
+    cursor: pointer;
+}
+
 .top-navbar .nav > li:hover .dropdown-menu {
     display: block;
 }
@@ -611,4 +615,7 @@ ul.nav.nav-second-level.collapse.in {
         padding: 15px 30px;
         top: 0;
     }
+}
+.login-panel{
+  margin-top: 25%;
 }
