@@ -1,13 +1,29 @@
 import React from 'react';
 import './index.css'
 import User from "../../service/userservice.jsx";
+
 const _user = new User();
+import MUtil from 'utils/mm.jsx'
+
+const _mm = new MUtil();
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             username: "",
             password: "",
+            redirect: _mm.getUrlParam('redirect') || '/',
+        }
+    }
+
+    componentWillMount() {
+        document.title = "登录 - MMALL";
+    }
+
+    onKeyUp(e) {
+        if (e.keyCode === 13) {
+            //点回车键的时候提交
+            this.onSubmit();
         }
     }
 
@@ -20,13 +36,22 @@ export default class Login extends React.Component {
         });
     }
 
-    onSubmit(e) {
-        _user.login({
+    onSubmit() {
+        let loginInfo = {
             username: this.state.username,
             password: this.state.password
-        }).then((res) => {
-        }, (err) => {
-
+        };
+        let checkResult = _user.checkLoginInfo(loginInfo);
+        if (!checkResult.success) {
+            _mm.errorTips(checkResult.msg);
+            return;
+        }
+        _user.login(loginInfo).then((res) => {
+            // console.log(this.state.redirect);
+            _mm.setStorage("userInfo", res);
+            this.props.history.push(this.state.redirect);
+        }, (errMsg) => {
+            _mm.errorTips(errMsg);
         });
     }
 
@@ -43,6 +68,7 @@ export default class Login extends React.Component {
                                        name="username"
                                        placeholder="请输入用户名"
                                        onChange={e => this.onChange(e)}
+                                       onKeyUp={e => this.onKeyUp(e)}
                                 />
                             </div>
                             <div className="form-group">
@@ -51,10 +77,11 @@ export default class Login extends React.Component {
                                        name="password"
                                        placeholder="请输入密码"
                                        onChange={e => this.onChange(e)}
+                                       onKeyUp={e => this.onKeyUp(e)}
                                 />
                             </div>
                             <button className="btn btn-lg btn-primary btn-block"
-                                    onClick={e => this.onSubmit(e)}
+                                    onClick={e => this.onSubmit()}
                             >Submit
                             </button>
                         </div>

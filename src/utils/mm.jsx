@@ -9,11 +9,11 @@ class MUtil {
                 success: res => {
                     if (res.success) {
                         typeof resolve === 'function' && resolve(res.data, res.msg);
+                        console.log(res);
                     } else {
                         this.doLogin();
                         typeof reject === 'function' && reject(res.msg || res.data);
                     }
-                    console.log(res)
                 },
                 error: err => {
                     console.log(err)
@@ -25,6 +25,40 @@ class MUtil {
 
     doLogin() {
         window.location.href = './login?redirect=' + encodeURIComponent(window.location.pathname);
+    }
+
+    getUrlParam(name) {
+        let queryString = window.location.search.split('?')[1] || "";
+        let reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        let result = queryString.match(reg);
+        return result ? encodeURIComponent(result[2]) : null;
+    }
+
+    errorTips(errMsg) {
+        alert(errMsg || '好像哪里不对')
+    }
+
+    setStorage(name, data) {
+        let dataType = typeof data;
+        if (dataType === 'object') {
+            window.localStorage.setItem(name, JSON.stringify(data));
+        } else if (['number', 'string', 'boolean'].indexOf(dataType) >= 0) {
+            window.localStorage.setItem(name, data);
+        } else {
+            alert('该类型支持本来存储');
+        }
+    }
+
+    getStorage(name) {
+        let data = window.localStorage.getItem(name);
+        if (data) {
+            return JSON.parse(data);
+        }else {
+            return "";
+        }
+    }
+    removeStorage(name){
+        window.localStorage.removeItem(name);
     }
 }
 
