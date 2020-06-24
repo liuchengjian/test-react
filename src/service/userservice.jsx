@@ -2,8 +2,8 @@ import MUtil from 'utils/mm.jsx'
 
 const _mm = new MUtil();
 
-class User {
-    login(loginInfo) {
+export default class User {
+     login(loginInfo) {
         return _mm.request({
             type: 'post',
             url: '/mmall/user/login.do',
@@ -11,4 +11,3 @@ class User {
         });
     }
 }
-export default User;

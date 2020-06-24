@@ -1,8 +1,7 @@
 import React from 'react';
 import './index.css'
 import User from "../../service/userservice.jsx";
-
-const _user = User();
+const _user = new User();
 export default class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -22,13 +21,13 @@ export default class Login extends React.Component {
     }
 
     onSubmit(e) {
-        // _user.login({
-        //     username: this.state.username,
-        //     password: this.state.password
-        // }).then((res) => {
-        // }, (err) => {
-        //
-        // });
+        _user.login({
+            username: this.state.username,
+            password: this.state.password
+        }).then((res) => {
+        }, (err) => {
+
+        });
     }
 
     render() {
