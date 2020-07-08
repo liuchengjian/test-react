@@ -93,9 +93,10 @@ module.exports = {
             index: '/dist/index.html'
         },
         proxy: {
-            '/mmall': {
-                target: 'http://139.9.222.156:8080',
-                changeOrigin: true,
+            '/manage': {
+                // target: 'http://139.9.222.156:8080',
+                target: 'http://10.114.73.119:8087',
+                changeOrigin: false,
             },
         },
     },
