@@ -33,13 +33,14 @@ export default class User {
       }
     }
   }
-    getUserList(pageNum) {
-        return _mm.request({
-            type: 'post',
-            url: '/manage/user/list.do',
-            data: {pageNum: pageNum}
-        });
-    }
+
+  getUserList(pageNum) {
+    return _mm.request({
+      type: 'post',
+      url: '/manage/user/list.do',
+      data: {pageNum: pageNum}
+    });
+  }
 
 
 }

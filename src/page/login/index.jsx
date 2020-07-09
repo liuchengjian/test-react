@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css'
-import User from "../../service/userservice.jsx";
+import User from "service/user-service.jsx";
 
 const _user = new User();
 import MUtil from 'utils/mm.jsx'
