@@ -1,5 +1,6 @@
 import React from 'react';
 import './theme.css';
+import './index.css';
 import TopNav from '../top-nav/index.jsx';
 import SideNav from '../side-nav/index.jsx';
 

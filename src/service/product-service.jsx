@@ -8,11 +8,22 @@ export default class Product {
    * @param pageNum
    * @returns {*|Promise|Promise<unknown>}
    */
-  getProductList(pageNum) {
+  getProductList(listParams) {
+    let url = '',
+      data = {};
+    if (listParams.listType === 'list') {
+      url = '/manage/product/list.do';
+      data.pageNum = listParams.pageNum;
+    } else if (listParams.listType === 'search') {
+      url = '/manage/product/search.do';
+      data.pageNum = listParams.pageNum;
+      data[listParams.searchType] = listParams.keyword;
+    }
+
     return _mm.request({
       type: 'post',
-      url: '/manage/product/list.do',
-      data: {pageNum: pageNum}
+      url: url,
+      data: data
     });
   }
 

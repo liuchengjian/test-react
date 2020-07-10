@@ -6,6 +6,7 @@ import MUtil from 'utils/mm.jsx'
 import Pagination from "utils/pagination/index.jsx";
 import TableList from "utils/table-list/index.jsx";
 import './index.css'
+import ProductListSearch from "page/product/index/index-list-search.jsx";
 
 const _product = new Product();
 const _mm = new MUtil();
@@ -16,7 +17,7 @@ export default class ProductList extends React.Component {
     this.state = {
       pageNum: 1,
       list: [],
-      firstLoading: true,
+      listType: 'list',
     }
   }
 
@@ -25,16 +26,19 @@ export default class ProductList extends React.Component {
   }
 
   loadProductList() {
-    _product.getProductList(this.state.pageNum).then
+    let listParams = {};
+    listParams.listType = this.state.listType;
+    listParams.pageNum = this.state.pageNum;
+    if (listParams.listType === 'search') {
+      listParams.searchType = this.state.searchType;
+      listParams.keyword = this.state.searchKeyword;
+    }
+    _product.getProductList(listParams).then
     (res => {
       this.setState({
         pageNum: res.pageNum,
         total: res.total,
         list: res.list,
-      }, () => {
-        this.setState({
-          firstLoading: false,
-        })
       })
     }, errMsg => {
       this.setState({
@@ -42,6 +46,19 @@ export default class ProductList extends React.Component {
       });
       _mm.errorTips(errMsg)
     });
+  }
+
+  onSearch(searchType, searchKeyword) {
+    let listType = searchKeyword === '' ? 'list' : 'search';
+    this.setState({
+      listType: listType,
+      pageNum: 1,
+      searchType: searchType,
+      searchKeyword: searchKeyword,
+    }, () => {
+      this.loadProductList()
+    });
+
   }
 
   /**
@@ -71,7 +88,6 @@ export default class ProductList extends React.Component {
   }
 
   render() {
-
     const {list, pageNum, total} = this.state;
     let tableHeaderData = [
       {name: '商品ID', width: '10%'},
@@ -103,7 +119,17 @@ export default class ProductList extends React.Component {
     });
     return (
       <div id="page-wrapper">
-        <PageTitle title={"商品列表"}/>
+        <PageTitle title={"商品列表"}>
+          <div className="page-header-right">
+            <Link className='btn btn-primary' to='/product/save'>
+              <i className='fa fa-plus'></i>
+              <span>添加商品</span>
+            </Link>
+          </div>
+        </PageTitle>
+        <ProductListSearch onSearch={(searchType, searchKeyword) => {
+          this.onSearch(searchType, searchKeyword)
+        }}/>
         <TableList
           tableHeaderData={tableHeaderData}
           children={listBody}
