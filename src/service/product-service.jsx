@@ -35,5 +35,15 @@ export default class Product {
     });
   }
 
+  /**
+   * 品类分类
+   */
+  getCategoryList(parentCategoryId){
+    return _mm.request({
+      type: 'post',
+      url: '/manage/category/get_category.do',
+      data: {categoryId: parentCategoryId||0}
+    });
+  }
 
 }

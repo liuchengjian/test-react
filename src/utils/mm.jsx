@@ -9,7 +9,7 @@ class MUtil {
                 success: res => {
                     if (res.success) {
                         typeof resolve === 'function' && resolve(res.data, res.msg);
-                        console.log(res.data);
+                        // console.log(res.data);
                     } else {
                         this.doLogin();
                         typeof reject === 'function' && reject(res.msg || res.data);
