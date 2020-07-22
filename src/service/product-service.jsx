@@ -38,12 +38,68 @@ export default class Product {
   /**
    * 品类分类
    */
-  getCategoryList(parentCategoryId){
+  getCategoryList(parentCategoryId) {
     return _mm.request({
       type: 'post',
       url: '/manage/category/get_category.do',
-      data: {categoryId: parentCategoryId||0}
+      data: {categoryId: parentCategoryId || 0}
     });
   }
 
+  checkProductResult(product) {
+    let result = {
+      success: true,
+      msg: "通过"
+    };
+    if (typeof product.name !== "string" || product.name.length === 0) {
+      return {
+        success: false,
+        msg: "商品名称不能为空"
+      }
+    }
+    if (typeof product.subtitle !== "string" || product.subtitle.length === 0) {
+      return {
+        success: false,
+        msg: "商品描述不能为空"
+      }
+    }
+    if (typeof product.categoryId !== "number" || !(product.categoryId > 0)) {
+      return {
+        success: false,
+        msg: "请选择商品品类"
+      }
+    }
+    if (typeof product.price !== "number" || !(product.price >= 0)) {
+      return {
+        success: false,
+        msg: "请输入正确的商品价格"
+      }
+    }
+    if (typeof product.stock !== "number" || !(product.stock >= 0)) {
+      return {
+        success: false,
+        msg: "请输入正确的库存数量"
+      }
+    }
+
+    return result;
+  };
+
+  saveProduct(product) {
+    return _mm.request({
+      type: 'GET',
+      url: '/manage/product/save.do',
+      data: product
+    });
+  }
+
+  getProduct(productId) {
+    return _mm.request({
+      type: 'GET',
+      url: '/manage/product/detail.do',
+      data: {
+        productId: productId || 0
+      }
+    });
+  }
 }

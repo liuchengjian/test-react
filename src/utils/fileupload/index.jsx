@@ -1,27 +1,20 @@
 import React from 'react'
-import FileUpload from 'react-fileupload';
+import Fileupload from './react-fileupload.jsx';
 
 export default class FileUpLoader extends React.Component {
   render() {
-    /*set properties*/
     const options = {
       baseUrl: '/manage/product/upload.do',
       fileFieldName: 'upload_file',
+      chooseAndUpload:true,
       dataType: 'json',
-      uploadSuccess: (res) => {
-        console.log(res)
-      },
-      uploadError:(err) => {
-        console.log(err)
-      },
-    }
-    /*Use FileUpload with options*/
-    /*Set two dom with ref*/
+      uploadSuccess:(res)=> this.props.uploadSuccess(res.data),
+      uploadError:(err)=>this.props.uploadError(err.message || '上传图片失败'),
+    };
     return (
-      <FileUpload options={options}>
-        {/*<button ref="chooseBtn">choose</button>*/}
-        {/*<button ref="uploadBtn">upload</button>*/}
-      </FileUpload>
+      <Fileupload options={options}>
+        <button className='btn btn-xs btn-default' ref="chooseAndUpload">请选择图片</button>
+      </Fileupload>
     )
   }
 }

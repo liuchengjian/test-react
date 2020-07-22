@@ -20,6 +20,31 @@ export default class CategorySelector extends React.Component {
     this.loadFirstCategory();
   }
 
+  componentWillReceiveProps(nextProps) {
+    let categoryIdChange = this.props.categoryId !== nextProps.categoryId,
+      parentCategoryIdChange = this.props.parentCategoryId !== nextProps.parentCategoryId;
+    if (!categoryIdChange && !parentCategoryIdChange) {
+      return false;
+    }
+    if (nextProps.parentCategoryId === 0) {
+      //一级品类
+      this.setState({
+        firstCategoryId: nextProps.categoryId,
+        secondCategoryId: 0,
+      })
+    } else {
+      //二级级品类
+      this.setState({
+        firstCategoryId: nextProps.parentCategoryId,
+        secondCategoryId: nextProps.categoryId,
+      }, () => {
+        parentCategoryIdChange && this.loadSecondCategory()
+      })
+    }
+
+
+  }
+
   loadFirstCategory() {
     _product.getCategoryList().then
     (res => {
@@ -79,6 +104,7 @@ export default class CategorySelector extends React.Component {
     return (
       <div className="col-sm-10">
         <select
+          value={this.state.firstCategoryId}
           className='form-control cate-select'
           onChange={(e) => this.onFirstCategoryChange(e)}
         >
@@ -92,6 +118,7 @@ export default class CategorySelector extends React.Component {
           }
         </select>
         <select
+          value={this.state.secondCategoryId}
           className='form-control cate-select'
           onChange={(e) => this.onSecondCategoryChange(e)}
         >
