@@ -9,8 +9,8 @@ export default class RichEditor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.defaultValue !== nextProps.defaultValue) {
-      this.simditor.setValue(nextProps.defaultValue)
+    if (this.props.defaultDetail !== nextProps.defaultDetail) {
+      this.simditor.setValue(nextProps.defaultDetail)
     }
   }
 

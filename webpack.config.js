@@ -93,10 +93,11 @@ module.exports = {
             index: '/dist/index.html'
         },
         proxy: {
-            '/manage': {
-                // target: 'http://139.9.222.156:8080',
+            '/manage/': {  //匹配所有以/api/为开头的接口
+                // target: 'http://139.9.222.156:8080', //后端服务器地址
                 target: 'http://10.114.73.119:8087',
-                changeOrigin: false,
+                changeOrigin: true,
+                // pathRewrite: { '^/mmall/': '' },  //因为我们项目的接口前面并没有api 所以直接去掉
             },
         },
     },

@@ -23,6 +23,7 @@ export default class ProductSave extends React.Component {
       price: '',
       stock: '',
       detail: '',
+      defaultDetail: '',
       status: 1,//商品状态1 代售
     }
   }
@@ -35,18 +36,18 @@ export default class ProductSave extends React.Component {
     //有id表示是编辑
     if (this.state.id) {
       _product.getProduct(this.state.id).then((res) => {
-        console.log(JSON.stringify(res))
-        let image = res.subImages.split(',')
+        // console.log(JSON.stringify(res))
+        let image = res.subImages.split(',');
         res.subImages = image.map((imgUrl) => {
           return {
             uri: imgUrl,
             url: res.imageHost + imgUrl,
           }
         });
-        res.defaultValue = res.detail;
+        res.defaultDetail = res.detail;
         this.setState({
           categoryId: res.categoryId,
-          secondCategoryId: res.secondCategoryId,
+          secondCategoryId: res.parentCategoryId,
           subImages: res.subImages,
           name: res.name,
           subtitle: res.subtitle,
@@ -54,6 +55,7 @@ export default class ProductSave extends React.Component {
           stock: res.stock,
           detail: res.detail,
           status: res.status,
+          defaultDetail: res.defaultDetail,
         })
       }, (errMsg) => {
         _mm.errorTips(errMsg);
@@ -135,7 +137,10 @@ export default class ProductSave extends React.Component {
         status: this.state.status,
       },
       checkProductResult = _product.checkProductResult(product);
-    console.log(JSON.stringify(product))
+    if (this.state.id) {
+      product.id = this.state.id;
+    }
+    // console.log(JSON.stringify(product))
     if (checkProductResult.success) {
       _product.saveProduct(product).then((res) => {
         _mm.successTips(res);
@@ -183,7 +188,7 @@ export default class ProductSave extends React.Component {
             <label htmlFor="inputPassword3" className="col-sm-2 control-label">商品描述</label>
             <CategorySelector
               categoryId={this.state.categoryId}
-              parentCategoryId={this.state.parentCategoryId}
+              parentCategoryId={this.state.secondCategoryId}
               onCategoryChange={
                 (categoryId, parentCategoryId) =>
                   this.onCategoryChange(categoryId, parentCategoryId)
@@ -241,7 +246,7 @@ export default class ProductSave extends React.Component {
             <label htmlFor="inputPassword3" className="col-sm-2 control-label">详情</label>
             <div className="col-sm-10">
               <RichEditor
-                defaultValue={this.state.defaultValue}
+                defaultDetail={this.state.defaultDetail}
                 detail={this.state.detail}
                 onValueChange={(value) => this.onRichEditorValueChange(value)}/>
             </div>
